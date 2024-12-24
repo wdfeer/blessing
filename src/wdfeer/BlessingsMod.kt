@@ -8,6 +8,8 @@ import mindustry.ui.dialogs.BaseDialog
 
 @Suppress("unused")
 class BlessingsMod : Mod() {
+    var activeBlessing = Blessing.None
+
     init {
         Events.on(EventType.ClientLoadEvent::class.java) {
             Time.runTask(10f) {
@@ -16,15 +18,22 @@ class BlessingsMod : Mod() {
                         for (blessing in Blessing.entries) {
                             table {
                                 button(blessing.name) {
-                                    // TODO
+                                    activeBlessing = blessing
                                     hide()
-                                }.pad(20f).size(90f, 40f)
+                                }.pad(20f).size(100f, 50f)
                                 add(blessing.description)
                             }.row()
                         }
                     }
                     show()
                 }
+            }
+        }
+
+        Events.on(EventType.BlockBuildEndEvent::class.java) {
+            when (activeBlessing) {
+                Blessing.None -> {}
+                Blessing.Reimu -> it.tile.build.maxHealth *= 2
             }
         }
     }
