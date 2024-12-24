@@ -18,22 +18,7 @@ class BlessingsMod : Mod() {
 
     init {
         Events.on(EventType.ClientLoadEvent::class.java) {
-            Time.runTask(10f) {
-                BaseDialog("Select Blessing").apply {
-                    cont.apply {
-                        for (blessing in Blessing.entries) {
-                            table {
-                                button(blessing.name) {
-                                    activeBlessing = blessing
-                                    hide()
-                                }.pad(20f).size(130f, 60f)
-                                add(blessing.description)
-                            }.row()
-                        }
-                    }
-                    show()
-                }
-            }
+            Vars.ui.menufrag.addButton("Blessings", ::showBlessingSelectionUI)
         }
 
         Events.on(EventType.BlockBuildEndEvent::class.java) {
@@ -51,15 +36,34 @@ class BlessingsMod : Mod() {
         scheduleUpdate()
     }
 
+    private fun showBlessingSelectionUI() {
+        BaseDialog("Select Blessing").apply {
+            cont.apply {
+                for (blessing in Blessing.entries) {
+                    table {
+                        button(blessing.name) {
+                            activeBlessing = blessing
+                            hide()
+                        }.pad(20f).size(130f, 60f)
+                        add(blessing.description)
+                    }.row()
+                }
+            }
+            show()
+        }
+    }
+
     private var lastUpdateTime: Long = Time.nanos()
     private fun update() {
         val delta = Time.timeSinceNanos(lastUpdateTime) / 1e9f
         when (activeBlessing) {
             Reimu -> Groups.build.filter { it.team == Vars.player.team() }.filterIsInstance<CoreBuild>()
                 .forEach { it.healFract(0.1f * delta) }
+
             Nitori -> Groups.build.filter { it.team == Vars.player.team() }.forEach { it.efficiency += 0.2f }
             Takane -> Groups.build.filter { it.team == Vars.player.team() }.filterIsInstance<TurretBuild>()
                 .forEach { it.efficiency += 1f }
+
             Sanae -> Vars.player.unit().heal(80f * delta)
             Aya -> Vars.player.unit().speedMultiplier = 2f
 
