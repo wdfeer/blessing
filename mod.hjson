@@ -1,20 +1,20 @@
 #the mod name as displayed in-game
-displayName: "Kotlin Mod Template"
+displayName: "Blessings"
 
 #the internal name of your mod
-name: "example-kotlin-mod"
+name: "blessings"
 
 #your name
-author: "You"
+author: "wdfeer"
 
 #the fully qualified main class of the mod
-main: "example.ExampleKotlinMod"
+main: "wdfeer.BlessingsMod"
 
 #the mod description as seen in the mod dialog
-description: "A Mindustry Kotlin mod template."
+description: "Allows selecting game-changing Blessings."
 
 #the mod version
-version: 1.0
+version: 1-alpha
 
 #the minimum game build required to run this mod
 minGameVersion: 146
