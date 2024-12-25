@@ -30,6 +30,8 @@ class BlessingsMod : Mod() {
             }
         }
 
+        initNet()
+
         scheduleUpdate()
     }
 
