@@ -7,19 +7,16 @@ import mindustry.Vars
 import mindustry.game.EventType
 import mindustry.gen.Groups
 import mindustry.mod.*
-import mindustry.ui.dialogs.BaseDialog
 import mindustry.world.blocks.defense.turrets.Turret.TurretBuild
 import mindustry.world.blocks.storage.CoreBlock.CoreBuild
 import wdfeer.Blessing.*
 
 @Suppress("unused")
 class BlessingsMod : Mod() {
-    private var activeBlessing = None
+    var activeBlessing = None
 
     init {
-        Events.on(EventType.ClientLoadEvent::class.java) {
-            Vars.ui.menufrag.addButton("Blessings", ::showBlessingSelectionUI)
-        }
+        initUI()
 
         Events.on(EventType.BlockBuildEndEvent::class.java) {
             it.tile.build ?: return@on
@@ -34,23 +31,6 @@ class BlessingsMod : Mod() {
         }
 
         scheduleUpdate()
-    }
-
-    private fun showBlessingSelectionUI() {
-        BaseDialog("Select Blessing").apply {
-            cont.apply {
-                for (blessing in Blessing.entries) {
-                    table {
-                        button(blessing.name) {
-                            activeBlessing = blessing
-                            hide()
-                        }.pad(20f).size(130f, 60f)
-                        add(blessing.description)
-                    }.row()
-                }
-            }
-            show()
-        }
     }
 
     private var lastUpdateTime: Long = Time.nanos()
