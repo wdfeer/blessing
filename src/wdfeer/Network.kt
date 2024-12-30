@@ -1,6 +1,7 @@
 package wdfeer
 
 import arc.Events
+import arc.util.Time
 import arc.util.io.Reads
 import arc.util.io.Writes
 import mindustry.Vars
@@ -15,7 +16,9 @@ fun BlessingMod.initNet() {
         state.remote[connection.player] = packet.blessing!!
     }
     Events.on(EventType.ClientServerConnectEvent::class.java) {
-        Vars.net.send(BlessingPacket(state.local), true)
+        Time.run(10f) {
+            Vars.net.send(BlessingPacket(state.local), true)
+        }
     }
 }
 
