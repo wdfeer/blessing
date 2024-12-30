@@ -14,7 +14,7 @@ fun BlessingMod.initNet() {
         state.remote[connection.player] = packet.blessing
     }
     Events.on(EventType.ClientServerConnectEvent::class.java) {
-        Vars.net.send(BlessingPacket(state.remote[Groups.player.first()]!!), true)
+        Vars.net.send(BlessingPacket(state.local), true)
     }
 }
 
