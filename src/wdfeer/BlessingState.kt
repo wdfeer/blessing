@@ -1,44 +1,40 @@
 package wdfeer
 
-import mindustry.Vars
-import mindustry.game.EventType
+import arc.util.Time
+import mindustry.entities.bullet.BasicBulletType
+import mindustry.gen.BlockUnitc
+import mindustry.gen.Bullet
 import mindustry.gen.Groups
 import mindustry.gen.Player
+import mindustry.gen.UnitEntity
 import mindustry.world.blocks.defense.turrets.Turret.TurretBuild
+import mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild
 import mindustry.world.blocks.storage.CoreBlock.CoreBuild
 import wdfeer.Blessing.*
 
 data class BlessingState(var local: Blessing, val remote: MutableMap<Player, Blessing>)
+
 val BlessingState.blessings: Map<Player, Blessing>
     get() = remote + (Groups.player.first() to local)
 
-fun BlessingState.update(delta: Float) {
+fun BlessingState.update() {
+    val delta = Time.delta
     for ((player, blessing) in blessings) {
         when (blessing) {
             Reimu -> Groups.build.filter { it.team == player.team() }.filterIsInstance<CoreBuild>()
                 .forEach { it.healFract(0.1f * delta) }
 
-            Nitori -> Groups.build.filter { it.team == Vars.player.team() }
-                .forEach { it.efficiency += 0.2f } // FIXME: doesn't work
-            Takane -> Groups.build.filter { it.team == Vars.player.team() }.filterIsInstance<TurretBuild>()
-                .forEach { it.efficiency += 1f } // FIXME: doesn't work
+            Nitori -> Groups.build.filter { it.team == player.team() }.filterIsInstance<GenericCrafterBuild>()
+                .forEach { it.totalProgress += delta * 10 } // FIXME
+
+            Takane -> ((player.unit() as? BlockUnitc)?.tile() as? TurretBuild)?.apply {
+                reloadCounter += delta
+            }
 
             Sanae -> player.unit().heal(80f * delta)
-            Aya -> player.unit().speedMultiplier = 2f
+            Aya -> player.unit().speedMultiplier = 2f // FIXME
 
             else -> {}
         }
-    }
-}
-
-fun BlessingState.onBlockBuilt(event: EventType.BlockBuildEndEvent) {
-    event.tile.build ?: return
-    when (blessings[event.unit.player]) {
-        Takane -> {
-            event.tile.build.health *= 0.5f
-            event.tile.build.maxHealth *= 0.5f
-        }
-
-        else -> {}
     }
 }
