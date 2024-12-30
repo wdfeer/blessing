@@ -7,13 +7,13 @@ import mindustry.net.Net
 import mindustry.net.NetConnection
 import mindustry.net.Packet
 
-fun BlessingsMod.initNet() {
+fun BlessingMod.initNet() {
     Net.registerPacket { BlessingPacket(Blessing.None) }
     Vars.net.handleServer(BlessingPacket::class.java) { connection: NetConnection, packet: BlessingPacket ->
-        // TODO: sync client's blessing
+        state.blessings[connection] = packet.blessing
     }
     Events.on(EventType.ClientServerConnectEvent::class.java) {
-        Vars.net.send(BlessingPacket(activeBlessing), true)
+        Vars.net.send(BlessingPacket(state.blessings[null]!!), true)
     }
 }
 

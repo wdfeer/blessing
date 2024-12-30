@@ -1,20 +1,20 @@
 #the mod name as displayed in-game
-displayName: "Blessings"
+displayName: "Blessing"
 
 #the internal name of your mod
-name: "blessings"
+name: "blessing"
 
 #your name
 author: "wdfeer"
 
 #the fully qualified main class of the mod
-main: "wdfeer.BlessingsMod"
+main: "wdfeer.BlessingMod"
 
 #the mod description as seen in the mod dialog
 description: "Allows selecting game-changing Blessings."
 
 #the mod version
-version: 1-alpha
+version: 2-alpha
 
 #the minimum game build required to run this mod
 minGameVersion: 146
