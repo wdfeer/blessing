@@ -1,13 +1,12 @@
 package wdfeer
 
 import arc.util.Time
-import mindustry.entities.bullet.BasicBulletType
+import mindustry.Vars
 import mindustry.gen.BlockUnitc
-import mindustry.gen.Bullet
 import mindustry.gen.Groups
 import mindustry.gen.Player
-import mindustry.gen.UnitEntity
 import mindustry.world.blocks.defense.turrets.Turret.TurretBuild
+import mindustry.world.blocks.production.GenericCrafter
 import mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild
 import mindustry.world.blocks.storage.CoreBlock.CoreBuild
 import wdfeer.Blessing.*
@@ -25,7 +24,7 @@ fun BlessingState.update() {
                 .forEach { it.healFract(0.1f * delta) }
 
             Nitori -> Groups.build.filter { it.team == player.team() }.filterIsInstance<GenericCrafterBuild>()
-                .forEach { it.totalProgress += delta * 10 } // FIXME
+                .forEach { it.progress += it.getProgressIncrease((it.block as GenericCrafter).craftTime) / 10f }
 
             Takane -> ((player.unit() as? BlockUnitc)?.tile() as? TurretBuild)?.apply {
                 reloadCounter += delta
