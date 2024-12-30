@@ -4,12 +4,12 @@ import arc.util.Time
 import mindustry.Vars
 import mindustry.game.EventType
 import mindustry.gen.Groups
-import mindustry.net.NetConnection
+import mindustry.gen.Player
 import mindustry.world.blocks.defense.turrets.Turret.TurretBuild
 import mindustry.world.blocks.storage.CoreBlock.CoreBuild
 import wdfeer.Blessing.*
 
-data class BlessingState(val blessings: MutableMap<NetConnection?, Blessing>, var lastUpdateTime: Long)
+data class BlessingState(val blessings: MutableMap<Player, Blessing>, var lastUpdateTime: Long)
 
 fun BlessingState.update() {
     for (blessing in blessings.values) {
@@ -34,7 +34,7 @@ fun BlessingState.update() {
 
 fun BlessingState.onBlockBuilt(event: EventType.BlockBuildEndEvent) {
     event.tile.build ?: return
-    when (blessings[event.unit.player.con]) {
+    when (blessings[event.unit.player]) {
         Takane -> {
             event.tile.build.health *= 0.5f
             event.tile.build.maxHealth *= 0.5f
