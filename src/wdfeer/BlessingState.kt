@@ -12,10 +12,10 @@ import wdfeer.Blessing.*
 data class BlessingState(val blessings: MutableMap<Player, Blessing>, var lastUpdateTime: Long)
 
 fun BlessingState.update() {
-    for (blessing in blessings.values) {
+    for ((player, blessing) in blessings) {
         val delta = Time.timeSinceNanos(lastUpdateTime) / 1e9f
         when (blessing) {
-            Reimu -> Groups.build.filter { it.team == Vars.player.team() }.filterIsInstance<CoreBuild>()
+            Reimu -> Groups.build.filter { it.team == player.team() }.filterIsInstance<CoreBuild>()
                 .forEach { it.healFract(0.1f * delta) }
 
             Nitori -> Groups.build.filter { it.team == Vars.player.team() }
@@ -23,8 +23,8 @@ fun BlessingState.update() {
             Takane -> Groups.build.filter { it.team == Vars.player.team() }.filterIsInstance<TurretBuild>()
                 .forEach { it.efficiency += 1f } // FIXME: doesn't work
 
-            Sanae -> Vars.player.unit().heal(80f * delta)
-            Aya -> Vars.player.unit().speedMultiplier = 2f
+            Sanae -> player.unit().heal(80f * delta)
+            Aya -> player.unit().speedMultiplier = 2f
 
             else -> {}
         }

@@ -4,7 +4,6 @@ import arc.Events
 import mindustry.Vars
 import mindustry.game.EventType
 import mindustry.gen.Groups
-import mindustry.net.Administration.PlayerInfo
 import mindustry.net.Net
 import mindustry.net.NetConnection
 import mindustry.net.Packet
