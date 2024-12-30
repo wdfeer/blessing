@@ -1,6 +1,7 @@
 package wdfeer
 
 import arc.util.Time
+import mindustry.Vars
 import mindustry.gen.BlockUnitc
 import mindustry.gen.Groups
 import mindustry.gen.Player
@@ -10,12 +11,14 @@ import mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild
 import mindustry.world.blocks.storage.CoreBlock.CoreBuild
 import wdfeer.Blessing.*
 
-data class BlessingState(var local: Blessing, val remote: MutableMap<Player, Blessing>)
+data class BlessingState(var local: Blessing, var remote: MutableMap<Player, Blessing>)
 
 val BlessingState.blessings: Map<Player, Blessing>
-    get() = remote + (Groups.player.first() to local)
+    get() = remote + (Vars.player to local)
 
 fun BlessingState.update() {
+    remote = remote.filterKeys { it.isAdded }.toMutableMap()
+
     val deltaTicks = Time.delta
     for ((player, blessing) in blessings) {
         when (blessing) {

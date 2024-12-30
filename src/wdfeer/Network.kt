@@ -1,6 +1,7 @@
 package wdfeer
 
 import arc.Events
+import arc.util.Log
 import arc.util.Time
 import arc.util.io.Reads
 import arc.util.io.Writes
@@ -14,19 +15,32 @@ import mindustry.net.Packet
 
 fun BlessingMod.initNet() {
     Net.registerPacket(::SingleBlessingPacket)
+    Net.registerPacket(::BlessingStatePacket)
 
     Vars.net.handleServer(SingleBlessingPacket::class.java) { connection: NetConnection, packet: SingleBlessingPacket ->
+        Log.debug("${connection.player} has ${packet.blessing}'s blessing.")
         state.remote[connection.player] = packet.blessing!!
-        Vars.net.send(BlessingStatePacket(state.blessings), true)
+        Vars.net.send(BlessingStatePacket(state.blessings.mapKeys { it.key.id }), true)
     }
 
     Events.on(EventType.ClientServerConnectEvent::class.java) {
+        state.remote = mutableMapOf()
         Time.run(10f) {
             Vars.net.send(SingleBlessingPacket(state.local), true)
         }
     }
     Vars.net.handleClient(BlessingStatePacket::class.java) {
-        state.remote += it.blessings!!
+        Time.run(10f) {
+            val playerToBlessing: Map<Any, Blessing> = it.blessings!!.mapKeys { entry ->
+                Groups.player.find { it.id == entry.key } ?: entry.key
+            }
+            for ((pl, bless) in playerToBlessing) {
+                when (pl) {
+                    is Player -> state.remote[pl] = bless
+                    is Int -> Log.err("Player#${pl} not found! Ignoring blessing entry.")
+                }
+            }
+        }
     }
 }
 
@@ -40,18 +54,18 @@ private class SingleBlessingPacket(var blessing: Blessing? = null) : Packet() {
     }
 }
 
-private class BlessingStatePacket(var blessings: Map<Player, Blessing>? = null) : Packet() {
+private class BlessingStatePacket(var blessings: Map<Int, Blessing>? = null) : Packet() {
     override fun read(read: Reads) {
         val length = read.s()
-        val pairs: MutableList<Pair<Player, Blessing>> = mutableListOf()
+        val pairs: MutableList<Pair<Int, Blessing>> = mutableListOf()
         for (i in 0 until length) {
             pairs.add(read.pair())
         }
         blessings = pairs.toMap()
     }
 
-    private fun Reads.pair(): Pair<Player, Blessing> {
-        return Groups.player.find { it.id == i() } to Blessing.entries[i()]
+    private fun Reads.pair(): Pair<Int, Blessing> {
+        return i() to Blessing.entries[i()]
     }
 
     override fun write(write: Writes) {
@@ -61,8 +75,8 @@ private class BlessingStatePacket(var blessings: Map<Player, Blessing>? = null) 
         }
     }
 
-    private fun Writes.pair(pair: Pair<Player, Blessing>) {
-        this.i(pair.first.id)
+    private fun Writes.pair(pair: Pair<Int, Blessing>) {
+        this.i(pair.first)
         this.i(pair.second.ordinal)
     }
 }

@@ -1,6 +1,7 @@
 package wdfeer
 
 import arc.Events
+import arc.util.Log
 import mindustry.Vars
 import mindustry.game.EventType
 import mindustry.mod.Mod
@@ -10,6 +11,8 @@ class BlessingMod : Mod() {
     val state: BlessingState = BlessingState(Blessing.None, mutableMapOf())
 
     init {
+        Log.level = Log.LogLevel.debug // TODO: set via gradle or sth
+
         initUI()
 
         Events.run(EventType.Trigger.update) { if (Vars.state.isGame && !Vars.state.isPaused) state.update() }
