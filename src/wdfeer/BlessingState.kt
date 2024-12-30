@@ -20,7 +20,7 @@ fun BlessingState.update() {
     for ((player, blessing) in blessings) {
         when (blessing) {
             Reimu -> Groups.build.filter { it.team == player.team() }.filterIsInstance<CoreBuild>()
-                .forEach { it.healFract(0.1f * deltaTicks) }
+                .forEach { it.healFract(0.1f * deltaTicks / 60f) }
 
             Nitori -> Groups.build.filter { it.team == player.team() }.filterIsInstance<GenericCrafterBuild>()
                 .forEach { it.progress += it.getProgressIncrease((it.block as GenericCrafter).craftTime) / 10f }
