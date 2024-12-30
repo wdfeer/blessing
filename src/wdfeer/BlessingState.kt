@@ -1,7 +1,6 @@
 package wdfeer
 
 import arc.util.Time
-import mindustry.Vars
 import mindustry.gen.BlockUnitc
 import mindustry.gen.Groups
 import mindustry.gen.Player
@@ -31,7 +30,13 @@ fun BlessingState.update() {
             }
 
             Sanae -> player.unit().heal(80f * delta)
-            Aya -> player.unit().speedMultiplier = 2f // FIXME
+
+            Aya -> player.unit().apply {
+                if (isFlying) {
+                    x += vel.x * delta
+                    y += vel.y * delta
+                }
+            }
 
             else -> {}
         }
