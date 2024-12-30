@@ -1,6 +1,5 @@
 package wdfeer
 
-import arc.util.Time
 import mindustry.Vars
 import mindustry.game.EventType
 import mindustry.gen.Groups
@@ -9,11 +8,12 @@ import mindustry.world.blocks.defense.turrets.Turret.TurretBuild
 import mindustry.world.blocks.storage.CoreBlock.CoreBuild
 import wdfeer.Blessing.*
 
-data class BlessingState(val blessings: MutableMap<Player, Blessing>, var lastUpdateTime: Long)
+data class BlessingState(var local: Blessing, val remote: MutableMap<Player, Blessing>)
+val BlessingState.blessings: Map<Player, Blessing>
+    get() = remote + (Groups.player.first() to local)
 
-fun BlessingState.update() {
+fun BlessingState.update(delta: Float) {
     for ((player, blessing) in blessings) {
-        val delta = Time.timeSinceNanos(lastUpdateTime) / 1e9f
         when (blessing) {
             Reimu -> Groups.build.filter { it.team == player.team() }.filterIsInstance<CoreBuild>()
                 .forEach { it.healFract(0.1f * delta) }
@@ -28,7 +28,6 @@ fun BlessingState.update() {
 
             else -> {}
         }
-        lastUpdateTime = Time.nanos()
     }
 }
 

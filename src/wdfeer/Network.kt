@@ -11,10 +11,10 @@ import mindustry.net.Packet
 fun BlessingMod.initNet() {
     Net.registerPacket { BlessingPacket(Blessing.None) }
     Vars.net.handleServer(BlessingPacket::class.java) { connection: NetConnection, packet: BlessingPacket ->
-        state.blessings[connection.player] = packet.blessing
+        state.remote[connection.player] = packet.blessing
     }
     Events.on(EventType.ClientServerConnectEvent::class.java) {
-        Vars.net.send(BlessingPacket(state.blessings[Groups.player.first()]!!), true)
+        Vars.net.send(BlessingPacket(state.remote[Groups.player.first()]!!), true)
     }
 }
 

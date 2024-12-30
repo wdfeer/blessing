@@ -9,7 +9,7 @@ import mindustry.mod.*
 
 @Suppress("unused")
 class BlessingMod : Mod() {
-    val state: BlessingState = BlessingState(mutableMapOf(), Time.nanos())
+    val state: BlessingState = BlessingState(Blessing.None, mutableMapOf())
 
     init {
         initUI()
@@ -21,9 +21,13 @@ class BlessingMod : Mod() {
         scheduleUpdate()
     }
 
+    var lastUpdateTime: Long = Time.nanos()
     private fun scheduleUpdate() {
         Core.app.post {
-            if (Vars.state.isGame && !Vars.state.isPaused) state.update()
+            if (Vars.state.isGame && !Vars.state.isPaused) {
+                state.update((Time.nanos() - lastUpdateTime) / 60f)
+                lastUpdateTime = Time.nanos()
+            }
             scheduleUpdate()
         }
     }

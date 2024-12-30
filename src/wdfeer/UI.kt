@@ -3,7 +3,6 @@ package wdfeer
 import arc.Events
 import mindustry.Vars
 import mindustry.game.EventType
-import mindustry.gen.Groups
 import mindustry.ui.dialogs.BaseDialog
 
 private lateinit var blessingSelectionDialog: BaseDialog
@@ -25,7 +24,7 @@ private fun BlessingMod.createBlessingSelectionUI(): BaseDialog {
             for (blessing in Blessing.entries) {
                 table {
                     button(blessing.name) {
-                        state.blessings[Groups.player.first()] = blessing
+                        state.local = blessing
                         hide()
                     }.pad(20f).size(130f, 60f)
                     add(blessing.description)
