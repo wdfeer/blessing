@@ -16,25 +16,26 @@ val BlessingState.blessings: Map<Player, Blessing>
     get() = remote + (Groups.player.first() to local)
 
 fun BlessingState.update() {
-    val delta = Time.delta
+    val deltaTicks = Time.delta
     for ((player, blessing) in blessings) {
         when (blessing) {
             Reimu -> Groups.build.filter { it.team == player.team() }.filterIsInstance<CoreBuild>()
-                .forEach { it.healFract(0.1f * delta) }
+                .forEach { it.healFract(0.1f * deltaTicks) }
 
             Nitori -> Groups.build.filter { it.team == player.team() }.filterIsInstance<GenericCrafterBuild>()
                 .forEach { it.progress += it.getProgressIncrease((it.block as GenericCrafter).craftTime) / 10f }
 
             Takane -> ((player.unit() as? BlockUnitc)?.tile() as? TurretBuild)?.apply {
-                reloadCounter += delta
+                reloadCounter += deltaTicks
             }
 
-            Sanae -> player.unit().heal(80f * delta)
+            Sanae -> Groups.unit.filter { it.team == player.team() && player.within(it, 160f) }
+                .forEach { it.heal(deltaTicks) }
 
             Aya -> player.unit().apply {
                 if (isFlying) {
-                    x += vel.x * delta
-                    y += vel.y * delta
+                    x += vel.x * deltaTicks
+                    y += vel.y * deltaTicks
                 }
             }
 

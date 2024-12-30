@@ -21,8 +21,8 @@ class BlessingMod : Mod() {
 enum class Blessing(val description: String) {
     None("Classic mindustry experience"),
     Reimu("Core 10% hp/s mending"),
+    Sanae("Nearby units 60 hp/s healing"),
     Nitori("Crafters +10% speed"),
     Takane("Controlled turret +100% fire rate"),
-    Sanae("Controlled unit 80 hp/s healing"),
     Aya("Controlled unit +100% speed when flying")
 }
