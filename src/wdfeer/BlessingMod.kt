@@ -26,5 +26,6 @@ enum class Blessing(val description: String) {
     Takane("Controlled turret +100% fire rate"),
     Aya("Controlled unit +100% speed when flying"),
     Seija("Nearby enemy units move backwards"),
-    Remilia("Drain 10 hp/s from each enemy unit near your core, repairing it")
+    Remilia("Drain 10 hp/s from each enemy unit near your core, repairing it"),
+    Sakuya("Close enemy projectiles can't move")
 }
