@@ -39,10 +39,10 @@ fun BlessingState.update() {
                 }
             }
 
-            Seija -> Groups.unit.filter { it.team != player.team() && player.within(it, 160f) }
+            Seija -> Groups.unit.filter { it.team != player.team() && player.within(it, 140f) }
                 .forEach {
-                    it.x -= it.vel.x * 2
-                    it.y -= it.vel.y * 2
+                    it.x -= it.vel.x * 1.2f
+                    it.y -= it.vel.y * 1.2f
                 }
 
             Remilia -> player.bestCore().apply {
