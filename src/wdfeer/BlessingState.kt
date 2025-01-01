@@ -39,6 +39,12 @@ fun BlessingState.update() {
                 }
             }
 
+            Seija -> Groups.unit.filter { it.team != player.team() && player.within(it, 160f) }
+                .forEach {
+                    it.x -= it.vel.x * 2
+                    it.y -= it.vel.y * 2
+                }
+
             else -> {}
         }
     }
