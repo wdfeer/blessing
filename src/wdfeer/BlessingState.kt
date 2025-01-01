@@ -55,7 +55,7 @@ fun BlessingState.update() {
                     }
             }
 
-            Sakuya -> Groups.bullet.filter { it.team != player.team() && player.within(it, 40f) }
+            Sakuya -> Groups.bullet.filter { it.team != player.team() && player.within(it, 80f) && it.id % 3 != 0 }
                 .forEach {
                     it.x = it.lastX
                     it.y = it.lastY
