@@ -25,7 +25,7 @@ enum class Blessing(val description: String) {
     Nitori("Nearby crafters work at 2x speed"),
     Takane("Controlled turret +100% fire rate"),
     Aya("Controlled unit +100% speed when flying"),
-    Seija("Nearby units move backwards at 20% speed"),
+    Seija("Nearby units move backwards at 30% speed"),
     Remilia("Drain 10 hp/s from each enemy unit near your core"),
     Sakuya("Some enemy projectiles stop before reaching you")
 }

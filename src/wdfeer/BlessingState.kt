@@ -42,8 +42,8 @@ fun BlessingState.update() {
 
             Seija -> Groups.unit.filter { player.within(it, 140f) }
                 .forEach {
-                    it.x -= it.vel.x * 1.2f
-                    it.y -= it.vel.y * 1.2f
+                    it.x -= it.vel.x * 1.3f
+                    it.y -= it.vel.y * 1.3f
                 }
 
             Remilia -> player.bestCore().apply {
