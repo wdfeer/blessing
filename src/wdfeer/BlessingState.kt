@@ -22,8 +22,8 @@ fun BlessingState.update() {
             Reimu -> Groups.build.filter { it.team == player.team() }.filterIsInstance<CoreBuild>()
                 .forEach { it.healFract(0.1f * deltaTicks / 60f) }
 
-            Nitori -> Groups.build.filter { it.team == player.team() }.filterIsInstance<GenericCrafterBuild>()
-                .forEach { it.progress += it.getProgressIncrease((it.block as GenericCrafter).craftTime) / 10f }
+            Nitori -> Groups.build.filter { it.team == player.team() && player.within(it, 160f) }.filterIsInstance<GenericCrafterBuild>()
+                .forEach { it.progress += it.getProgressIncrease((it.block as GenericCrafter).craftTime) }
 
             Takane -> ((player.unit() as? BlockUnitc)?.tile() as? TurretBuild)?.apply {
                 reloadCounter += deltaTicks
