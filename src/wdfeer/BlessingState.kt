@@ -49,7 +49,7 @@ fun BlessingState.update() {
             Remilia -> player.bestCore().apply {
                 Groups.unit.filter { it.team != player.team() && within(it, 160f) }
                     .forEach {
-                        val damage = 10f * deltaTicks / 60f
+                        val damage = 15f * deltaTicks / 60f
                         it.damagePierce(damage)
                         this.heal(damage)
                     }
@@ -60,6 +60,10 @@ fun BlessingState.update() {
                     it.x = it.lastX
                     it.y = it.lastY
                 }
+
+            Byakuren -> Groups.unit.forEach {
+                it.heal(10f * (if (it.team == player.team()) 2f else 1f) * deltaTicks / 60f)
+            }
 
             else -> {}
         }
