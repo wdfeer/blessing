@@ -14,7 +14,7 @@ main: "wdfeer.BlessingMod"
 description: "Allows selecting game-changing Blessings."
 
 #the mod version
-version: 3-alpha
+version: 1-beta
 
 #the minimum game build required to run this mod
 minGameVersion: 146
