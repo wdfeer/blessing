@@ -15,6 +15,7 @@ class BlessingMod : Mod() {
 
         initUI()
 
+        Events.on(EventType.WorldLoadEndEvent::class.java) { state.remote = mutableMapOf() }
         Events.run(EventType.Trigger.update) { if (Vars.state.isGame && !Vars.state.isPaused) state.update() }
 
         initNet()

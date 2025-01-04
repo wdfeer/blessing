@@ -17,10 +17,8 @@ val BlessingState.blessings: Map<Player, Blessing>
     get() = remote + (Vars.player to local)
 
 fun BlessingState.update() {
-    remote = remote.filterKeys { it.isAdded }.toMutableMap()
-
     val deltaTicks = Time.delta
-    for ((player, blessing) in blessings) {
+    for ((player, blessing) in blessings.filterKeys { it.isAdded }) {
         when (blessing) {
             Reimu -> Groups.build.filter { it.team == player.team() }.filterIsInstance<CoreBuild>()
                 .forEach { it.healFract(0.1f * deltaTicks / 60f) }

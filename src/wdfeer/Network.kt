@@ -18,7 +18,7 @@ fun BlessingMod.initNet() {
     Net.registerPacket(::BlessingStatePacket)
 
     Vars.net.handleServer(SingleBlessingPacket::class.java) { connection: NetConnection, packet: SingleBlessingPacket ->
-        Log.debug("${connection.player} has ${packet.blessing}'s blessing.")
+        Log.debug("Packet from client: ${connection.player} has ${packet.blessing}'s blessing.")
         state.remote[connection.player] = packet.blessing!!
         Vars.net.send(BlessingStatePacket(state.blessings.mapKeys { it.key.id }), true)
     }
@@ -36,7 +36,10 @@ fun BlessingMod.initNet() {
             }
             for ((pl, bless) in playerToBlessing) {
                 when (pl) {
-                    is Player -> state.remote[pl] = bless
+                    is Player -> {
+                        state.remote[pl] = bless
+                        Log.debug("Packet from server: $pl has $bless's blessing")
+                    }
                     is Int -> Log.err("Player#${pl} not found! Ignoring blessing entry.")
                 }
             }
