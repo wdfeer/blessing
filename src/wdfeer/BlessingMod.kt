@@ -23,9 +23,13 @@ class BlessingMod : Mod() {
 
 enum class Blessing(val description: String) {
     None("Classic mindustry experience"),
-    Reimu("Core 10% hp/s mending"),
-    Sanae("Nearby units 60 hp/s healing"),
-    Nitori("Crafters +10% speed"),
-    Takane("Controlled turret +100% fire rate"),
-    Aya("Controlled unit +100% speed when flying")
+    Reimu("Your core regenerates 10% hp/s"),
+    Sanae("Nearby friendly units regenerate 60 hp/s"),
+    Nitori("Your nearby crafters work at 2x speed"),
+    Takane("Controlled turret has +100% fire rate"),
+    Aya("Controlled unit has +100% speed when flying"),
+    Seija("Nearby units including allies move backwards at 30% speed"),
+    Remilia("Drain 15 hp/s from each enemy unit near your core"),
+    Sakuya("Some enemy projectiles stop before reaching you"),
+    Byakuren("Heals all units 10 hp/s, allies twice as much")
 }
